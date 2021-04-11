@@ -42,7 +42,7 @@ def setURL(appID, guildID):
 
 def get(header):
   k = checkURL()
-  url = f"https://discord.com/api/v8/applications/{k[0]}/guilds/{k[1]}/commands
+  url = f"https://discord.com/api/v8/applications/{k[0]}/guilds/{k[1]}/commands"
   head = f"Bot {header}"
   headers = {
     "Authorization": head
