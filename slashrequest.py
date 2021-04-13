@@ -17,55 +17,35 @@ def store(file, key=None, read=False, val=None):
 		with open(file, 'w') as v:
 			json.dump(x, v, indent=4)
 
+			
+head = {"Authorization": f"Bot {store('config.json', 'token', True)}"}
+
 # internal
 def checkURL():
-  x = store('config,json', 'slashID', True)
+  x = store('config.json', 'slashID', True)
   returns = []
   if x['appID'] is not None:
     returns.append(x['appID'])
   
   if x['guildID'] is not None:
-    returns.append(x['appID'])
+    returns.append(x['guildID'])
    
   return returns
 
-def setURL(appID, guildID):
-  try:
-    x = store('config.json', None, True)
-    x['slashID']['appID'] = appID
-    x['slashID']['guildID'] = guildID
-    with open('config.json', 'r') as v:
-      json.dump(x, v, indent=4)
-    return True
-  except:
-    return False
-
-def get(header):
+def get():
   k = checkURL()
   url = f"https://discord.com/api/v8/applications/{k[0]}/guilds/{k[1]}/commands"
-  head = f"Bot {header}"
-  headers = {
-    "Authorization": head
-  }
-  f = requests.get(url, headers=headers)
-  return f
+  f = requests.get(url, headers=head)
+  return f.text
   
-def post(header, jsonData):
+def post(jsonData):
   k = checkURL()
   url = f"https://discord.com/api/v8/applications/{k[0]}/guilds/{k[1]}/commands"
-  head = f"Bot {header}"
-  headers = {
-    "Authorization": head
-  }
-  e = requests.post(url, headers=headers, json=jsonData)
+  e = requests.post(url, headers=head, json=jsonData)
   return e
 
-def delete(header, slashAppID):
+def rem(slashAppID):
   k = checkURL()
   url = f"https://discord.com/api/v8/applications/{k[0]}/guilds/{k[1]}/commands"
-  head = f"Bot {header}"
-  headers = {
-    "Authorization": head
-  }
-  r = requests.delete(url + f"/{slashAppID}", headers=headers)
+  r = requests.delete(url + f"/{slashAppID}", headers=head)
   return r
