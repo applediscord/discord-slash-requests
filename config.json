@@ -7,6 +7,5 @@
 		"guildID": "discord_scmd_guild_id",
 		"selfID": "discord_bot_owner_id",
 		"staff": "discord_guild_perms_role_id",
-		"tips": true
 	}
 }
