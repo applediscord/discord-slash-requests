@@ -24,23 +24,19 @@ def store(file, key=None, read=False, val=None):
 
 head = store('config.json', 'slashConfig', True)['auth']
 
-# add tips later
-def checktips():
-	return store('config.json', 'slashConfig', True)['tips']
-
 # internal
 def checkURL():
-  x = store('config.json', 'slashConfig', True)
-  returns = []
-  if x['appID'] is not None:
-    returns.append(x['appID'])
+	x = store('config.json', 'slashConfig', True)
+	returns = []
+	if x['appID'] is not None:
+		returns.append(x['appID'])
 
-  if x['guildID'] is not None and x['tempID'] is None:
-    returns.append(x['guildID'])
-  else:
-    returns.append(x['tempID'])
+	if x['guildID'] is not None and x['tempID'] is None:
+		returns.append(x['guildID'])
+	else:
+		returns.append(x['tempID'])
 
-  return returns
+	return returns
 
 class sc:
 	def setGID(ngid):
@@ -70,10 +66,10 @@ class sc:
 		return f.json()
 
 	def post(jsonData):
-	  k = checkURL()
-	  url = f"https://discord.com/api/v8/applications/{k[0]}/guilds/{k[1]}/commands"
-	  e = requests.post(url, headers=head, json=jsonData)
-	  return e
+		k = checkURL()
+		url = f"https://discord.com/api/v8/applications/{k[0]}/guilds/{k[1]}/commands"
+		e = requests.post(url, headers=head, json=jsonData)
+		return e
 
 	def rem(slashName):
 		k = checkURL()
@@ -169,3 +165,46 @@ class sc:
 		}
 		r = requests.put(url, headers=head, json=jData)
 		return r
+
+class gl:
+    def get(comName=None, all=False):
+        k = checkURL()
+        url = f"https://discord.com/api/v8/applications/{k[0]}/commands"
+        f = requests.get(url, headers=head)
+        if all is False:
+            if comName is not None:
+                d = None
+                for com in f.json():
+                    if com['name'] == comName:
+                        d = com
+                        break
+                return d
+            g = []
+            for com in f.json():
+                name = com['name']
+                id = com['id']
+                g.append({"name": name, "id": id})
+            return g
+        return f.json()
+        
+    def post(jsonData):
+        k = checkURL()
+        url = f"https://discord.com/api/v8/applications/{k[0]}/commands"
+        e = requests.post(url, headers=head, json=jsonData)
+        return e
+        
+    def rem(slashName):
+        k = checkURL()
+        url = f"https://discord.com/api/v8/applications/{k[0]}/commands"
+        f = requests.get(url, headers=head)
+        d = None
+        if slashName is not None:
+            d = None
+            for com in f.json():
+                if com['name'] == slashName:
+                    d = com
+                    break
+            if d is None: return
+            id = 'id'
+            r = requests.delete(url + f"/{com[id]}", headers=head)
+            return r
