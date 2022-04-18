@@ -1,3 +1,5 @@
+# NOTICE: This repository has been archived in favor of discord.py's version 2 slash command implementation
+
 # discord-slash-requests
 A small python program to help with discord slash commands
 
